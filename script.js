@@ -2,10 +2,18 @@ const board = document.getElementById('board');
 const cells = document.querySelectorAll('.cell');
 const statusDisplay = document.getElementById('status');
 const resetBtn = document.getElementById('resetBtn');
+const scoreXDisplay = document.getElementById('scoreX');
+const scoreODisplay = document.getElementById('scoreO');
 
 let gameActive = true;
 let currentPlayer = 'X';
 let gameState = ['', '', '', '', '', '', '', '', ''];
+let scoreX = parseInt(localStorage.getItem('ticTacToeScoreX')) || 0;
+let scoreO = parseInt(localStorage.getItem('ticTacToeScoreO')) || 0;
+
+// Initialize display with stored values
+scoreXDisplay.innerText = scoreX;
+scoreODisplay.innerText = scoreO;
 
 const winningConditions = [
     [0, 1, 2],
@@ -64,6 +72,18 @@ function handleResultValidation() {
         winningCells.forEach(index => {
             cells[index].classList.add('win');
         });
+
+        // Update score
+        if (currentPlayer === 'X') {
+            scoreX++;
+            scoreXDisplay.innerText = scoreX;
+            localStorage.setItem('ticTacToeScoreX', scoreX);
+        } else {
+            scoreO++;
+            scoreODisplay.innerText = scoreO;
+            localStorage.setItem('ticTacToeScoreO', scoreO);
+        }
+
         return;
     }
 
