@@ -8,11 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <a href="explain.html">
+    <button class="explain-btn">Explain This game</button></a>
+
+    
     <div class="container">
         <header>
             <h1>Tic Tac Toe</h1>
             <div class="status" id="status">Player X's Turn</div>
         </header>
+
+        <div class="mode-selector">
+            <button class="mode-btn active" id="pvpBtn">Player vs Player</button>
+            <button class="mode-btn" id="pvcBtn">Player vs Computer</button>
+        </div>
 
         <div class="scoreboard">
             <div class="score-box x-score-box">
@@ -39,6 +48,7 @@
 
         <button class="reset-btn" id="resetBtn">Restart Game</button>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

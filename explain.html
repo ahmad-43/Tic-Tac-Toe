@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe - Explanation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="explain-container">
+        <h1>Explanation of Game</h1>
+        
+        <section class="explain-section">
+            <p>Tic-Tac-Toe is a simple strategy game played between two players on a square board made of nine spaces arranged in a 3×3 grid.</p>
+            <p>Each player chooses one symbol—usually <strong>X</strong> or <strong>O</strong>. The players then take turns placing their symbol in one empty space at a time. The main objective is to be the first player to place three of your symbols in a straight line.</p>
+            <p>That straight line can be formed in three ways:</p>
+            <ul>
+                <li>Across a horizontal row</li>
+                <li>Down a vertical column</li>
+                <li>Diagonally from one corner to another</li>
+            </ul>
+            <p>If a player succeeds in making such a line, they win the game immediately. If all nine spaces are filled and neither player has formed a line of three matching symbols, the game ends in a draw.</p>
+        </section>
+
+        <section class="explain-section">
+            <h2>How the game works step by step</h2>
+            <p>At the start, the board is empty. The first player places their mark in any one of the nine spaces. Then the second player places theirs in another empty space. This process continues until one player wins or the board is full. Because there are only nine spaces, the game is short and easy to understand.</p>
+        </section>
+
+        <section class="explain-section">
+            <h2>Why Tic-Tac-Toe is important in programming</h2>
+            <p>In programming, Tic-Tac-Toe is considered a beginner-friendly project because it teaches logical thinking. To create the game, a programmer must think about:</p>
+            <ul>
+                <li>How to represent the board</li>
+                <li>How to track turns</li>
+                <li>How to detect a winner</li>
+                <li>How to know when the game is over</li>
+                <li>How to restart the game</li>
+            </ul>
+            <p>So even though the game is simple, it introduces important programming concepts.</p>
+        </section>
+
+        <section class="explain-section">
+            <h2>Game logic in simple words</h2>
+            <p>The program must remember which spaces are occupied. Every time a player makes a move, the game checks whether that move creates a winning line.</p>
+            <ul>
+                <li>If yes, the game declares the winner.</li>
+                <li>If no, it checks whether the board is completely full.</li>
+                <li>If full, the game declares a draw.</li>
+                <li>Otherwise, the turn passes to the other player.</li>
+            </ul>
+            <p>This cycle repeats until the game ends.</p>
+        </section>
+
+        <section class="explain-section">
+            <h2>Strategy side of Tic-Tac-Toe</h2>
+            <p>Although it looks simple, the game includes strategy. A smart player tries to:</p>
+            <ul>
+                <li>Create opportunities for themselves</li>
+                <li>Block the opponent’s winning move</li>
+                <li>Control important spaces like the center or corners</li>
+            </ul>
+            <p>With perfect play from both players, Tic-Tac-Toe always ends in a draw. That means the game is “solved”—there is a known best strategy.</p>
+        </section>
+
+        <section class="explain-section">
+            <h2>Overall explanation in one sentence</h2>
+            <p>Tic-Tac-Toe is a two-player game of turns, planning, and pattern recognition where the goal is to align three matching symbols before the opponent does. It is simple enough for beginners but useful enough to teach core ideas in gaming and software logic.</p>
+        </section>
+
+        <div class="back-link-wrapper">
+            <a href="index.html" class="explain-link"><button class="explain-btn">Back to Game</button></a>
+        </div>
+    </div>
+</body>
+</html>
