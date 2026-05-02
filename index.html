@@ -7,7 +7,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
+        @keyframes float {
+            0% { transform: translateY(0px); text-shadow: 0px 4px 10px rgba(0,0,0,0.3); }
+            50% { transform: translateY(-8px); text-shadow: 0px 15px 20px rgba(0,0,0,0.4); }
+            100% { transform: translateY(0px); text-shadow: 0px 4px 10px rgba(0,0,0,0.3); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes iconBounce {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.15) rotate(5deg); }
+            75% { transform: scale(1.15) rotate(-5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
         .portal-container {
+            border: 2px solid black;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -21,16 +51,24 @@
             width: 90%;
             max-width: 600px;
             margin: 2rem 0;
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         .portal-container h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
             text-align: center;
-            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+            animation: float 4s ease-in-out infinite, gradientFlow 4s linear infinite;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
         }
 
         .games-list {
@@ -48,16 +86,29 @@
             border-radius: 15px;
             text-decoration: none;
             color: var(--text-color);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
             border: 1px solid transparent;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
         }
 
+        .game-card:nth-child(1) { animation-delay: 0.1s; }
+        .game-card:nth-child(2) { animation-delay: 0.25s; }
+        .game-card:nth-child(3) { animation-delay: 0.4s; }
+        .game-card:nth-child(4) { animation-delay: 0.55s; }
+
         .game-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
             background: var(--cell-hover);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 10px 15px rgba(0,0,0,0.2);
-            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 15px 25px rgba(0,0,0,0.3);
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .game-card:hover .game-icon {
+            animation: iconBounce 0.5s ease-in-out forwards;
+            background: rgba(56, 189, 248, 0.2);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4), inset 0 -4px 0 rgba(0,0,0,0.2);
         }
 
         .game-icon {
@@ -71,11 +122,17 @@
             align-items: center;
             border-radius: 12px;
             box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
 
         .game-info {
             display: flex;
             flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover .game-info {
+            transform: translateX(10px);
         }
 
         .game-title {
@@ -83,6 +140,11 @@
             font-weight: 800;
             color: var(--x-color);
             margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .game-card:hover .game-title {
+            color: #818cf8;
         }
 
         .game-desc {
@@ -102,6 +164,10 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
             border-color: transparent;
         }
+        
+        .future-game:hover .game-info {
+            transform: none;
+        }
 
         @media (max-width: 480px) {
             .portal-container {
@@ -120,9 +186,19 @@
                 font-size: 1.2rem;
             }
         }
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: var(--bg-color);
+        }
     </style>
 </head>
 <body>
+    <canvas id="bg-canvas"></canvas>
     <div class="portal-container">
         <h1>Mini Games</h1>
         
@@ -159,7 +235,212 @@
                     <div class="game-desc">Test your memory skills</div>
                 </div>
             </a>
+            
+            <!-- Dots and Boxes Game -->
+            <a href="dots.html" class="game-card">
+                <div class="game-icon">
+                    <span>🔲</span>
+                </div>
+                <div class="game-info">
+                    <div class="game-title">Dots and Boxes</div>
+                    <div class="game-desc">Connect the dots to make boxes</div>
+                </div>
+            </a>
         </div>
     </div>
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let stars = [];
+        let time = 0;
+        
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            
+            stars = [];
+            for(let i=0; i<400; i++) {
+                stars.push({
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5 + 0.1,
+                    angle: Math.random() * Math.PI * 2,
+                    orbitRadius: Math.random() * Math.max(width, height) * 1.5,
+                    opacitySpeed: Math.random() * 0.05 + 0.01
+                });
+            }
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function drawBlackHole(cx, cy) {
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(time * 0.001);
+            ctx.scale(1, 0.25);
+            ctx.beginPath();
+            ctx.arc(0, 0, 350, 0, Math.PI, true);
+            const diskGradBack = ctx.createRadialGradient(0, 0, 80, 0, 0, 350);
+            diskGradBack.addColorStop(0, 'rgba(255, 150, 0, 0.8)');
+            diskGradBack.addColorStop(0.4, 'rgba(150, 50, 255, 0.5)');
+            diskGradBack.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = diskGradBack;
+            ctx.fill();
+            ctx.restore();
+
+            const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, 280);
+            gradient.addColorStop(0, '#000');
+            gradient.addColorStop(0.25, '#000');
+            gradient.addColorStop(0.28, '#fff');
+            gradient.addColorStop(0.4, 'rgba(255, 180, 50, 0.7)');
+            gradient.addColorStop(0.6, 'rgba(100, 50, 255, 0.4)');
+            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 280, 0, Math.PI*2);
+            ctx.fill();
+
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(time * 0.001);
+            ctx.scale(1, 0.25);
+            ctx.beginPath();
+            ctx.arc(0, 0, 350, 0, Math.PI, false);
+            const diskGradFront = ctx.createRadialGradient(0, 0, 80, 0, 0, 350);
+            diskGradFront.addColorStop(0, 'rgba(255, 150, 0, 0.9)');
+            diskGradFront.addColorStop(0.4, 'rgba(150, 50, 255, 0.6)');
+            diskGradFront.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = diskGradFront;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawPlanet(cx, cy, radius, orbitRadius, speed, colorStops, hasRing, timeOffset) {
+            ctx.save();
+            ctx.translate(cx, cy);
+            
+            ctx.beginPath();
+            ctx.arc(0, 0, orbitRadius, 0, Math.PI*2);
+            ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+            ctx.stroke();
+
+            ctx.rotate(time * speed + timeOffset);
+            ctx.translate(orbitRadius, 0);
+
+            if (hasRing) {
+                ctx.save();
+                ctx.rotate(Math.PI / 5);
+                ctx.scale(1, 0.15);
+                ctx.beginPath();
+                ctx.arc(0, 0, radius * 2.4, Math.PI, Math.PI*2);
+                ctx.strokeStyle = 'rgba(200, 200, 200, 0.4)';
+                ctx.lineWidth = radius * 0.5;
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            const grad = ctx.createLinearGradient(-radius, -radius, radius, radius);
+            colorStops.forEach(stop => grad.addColorStop(stop[0], stop[1]));
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, 0, Math.PI*2);
+            ctx.fillStyle = grad;
+            ctx.shadowBlur = 30;
+            ctx.shadowColor = colorStops[0][1];
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            if (hasRing) {
+                ctx.save();
+                ctx.rotate(Math.PI / 5);
+                ctx.scale(1, 0.15);
+                ctx.beginPath();
+                ctx.arc(0, 0, radius * 2.4, 0, Math.PI);
+                ctx.strokeStyle = 'rgba(220, 220, 220, 0.7)';
+                ctx.lineWidth = radius * 0.5;
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            if (radius > 25) {
+                ctx.rotate(time * 0.003);
+                ctx.translate(radius * 2.5, 0);
+                ctx.beginPath();
+                ctx.arc(0, 0, radius * 0.2, 0, Math.PI*2);
+                ctx.fillStyle = '#cbd5e1';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#fff';
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            ctx.restore();
+        }
+
+        function drawShootingStar() {
+            if (Math.random() > 0.03) return;
+            const sx = Math.random() * width;
+            const sy = Math.random() * height * 0.4;
+            const len = Math.random() * 150 + 50;
+            
+            ctx.save();
+            ctx.translate(sx, sy);
+            ctx.rotate(Math.PI / 4);
+            const grad = ctx.createLinearGradient(0, 0, -len, 0);
+            grad.addColorStop(0, 'rgba(255,255,255,1)');
+            grad.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(-len, 2);
+            ctx.lineTo(-len, -2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function animate() {
+            time += 16;
+            
+            const bgGrad = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height));
+            bgGrad.addColorStop(0, '#0a001a');
+            bgGrad.addColorStop(1, '#000000');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, width, height);
+
+            const cx = width / 2;
+            const cy = height / 2;
+
+            ctx.fillStyle = 'white';
+            stars.forEach(star => {
+                star.angle += star.speed * 0.001;
+                const x = cx + Math.cos(star.angle) * star.orbitRadius;
+                const y = cy + Math.sin(star.angle) * star.orbitRadius;
+                
+                ctx.globalAlpha = Math.abs(Math.sin(time * star.opacitySpeed * 0.1));
+                ctx.beginPath();
+                ctx.arc(x, y, star.size, 0, Math.PI*2);
+                ctx.fill();
+            });
+            ctx.globalAlpha = 1.0;
+
+            drawBlackHole(cx, cy);
+
+            drawPlanet(cx, cy, 45, Math.min(width, height) * 0.38, 0.00015, [
+                [0, '#ea580c'], [0.3, '#fed7aa'], [0.6, '#9a3412'], [1, '#ffedd5']
+            ], false, 0);
+
+            drawPlanet(cx, cy, 35, Math.min(width, height) * 0.48, 0.00008, [
+                [0, '#eab308'], [1, '#854d0e']
+            ], true, Math.PI);
+            
+            drawPlanet(cx, cy, 22, Math.min(width, height) * 0.28, 0.00025, [
+                [0, '#0284c7'], [1, '#1e3a8a']
+            ], false, Math.PI / 2);
+
+            drawShootingStar();
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 </body>
 </html>
