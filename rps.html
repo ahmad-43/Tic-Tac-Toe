@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .rps-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .battle-arena {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--board-bg);
+            border-radius: 15px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .fighter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 120px;
+        }
+
+        .hand-icon {
+            font-size: 5rem;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .hand-icon.shake-left {
+            animation: shakeLeft 0.5s ease-in-out infinite;
+        }
+
+        .hand-icon.shake-right {
+            animation: shakeRight 0.5s ease-in-out infinite;
+        }
+
+        @keyframes shakeLeft {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(-15deg); }
+        }
+
+        @keyframes shakeRight {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(15deg); }
+        }
+
+        .vs-text {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--o-color);
+            text-shadow: 0 2px 5px rgba(244, 63, 94, 0.5);
+        }
+
+        .choices-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .choice-btn {
+            background: var(--cell-bg);
+            border: none;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .choice-btn:hover {
+            background: var(--cell-hover);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2), 0 8px 12px rgba(0,0,0,0.2);
+        }
+
+        .choice-btn:active {
+            transform: translateY(0) scale(0.95);
+            box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .win-anim {
+            animation: winPulse 1s ease;
+        }
+
+        @keyframes winPulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(16, 185, 129, 0)); }
+            50% { transform: scale(1.2); filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.8)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(16, 185, 129, 0)); }
+        }
+
+        @media (max-width: 480px) {
+            .hand-icon {
+                font-size: 4rem;
+                height: 100px;
+            }
+            .choice-btn {
+                width: 65px;
+                height: 65px;
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="explain.html">
+        <button class="explain-btn">Go back</button>
+    </a>
+    
+    <div class="rps-container container">
+        <header>
+            <h1>Rock Paper Scissors</h1>
+            <div class="status" id="rps-status">Choose your weapon!</div>
+        </header>
+
+        <div class="scoreboard">
+            <div class="score-box x-score-box">
+                <span class="score-label">Player</span>
+                <span class="score-value" id="rps-score-player">0</span>
+            </div>
+            <div class="score-box o-score-box">
+                <span class="score-label">Computer</span>
+                <span class="score-value" id="rps-score-computer">0</span>
+            </div>
+        </div>
+
+        <div class="battle-arena">
+            <div class="fighter">
+                <span class="score-label">You</span>
+                <div class="hand-icon" id="player-hand">✊</div>
+            </div>
+            <div class="vs-text">VS</div>
+            <div class="fighter">
+                <span class="score-label">Computer</span>
+                <div class="hand-icon" id="computer-hand">✊</div>
+            </div>
+        </div>
+
+        <div class="choices-container">
+            <button class="choice-btn" id="btn-rock" title="Rock">✊</button>
+            <button class="choice-btn" id="btn-paper" title="Paper">✋</button>
+            <button class="choice-btn" id="btn-scissors" title="Scissors">✌️</button>
+        </div>
+
+        <button class="reset-btn" id="rps-resetBtn">Reset Scores</button>
+    </div>
+
+    <script src="rps.js"></script>
+</body>
+</html>

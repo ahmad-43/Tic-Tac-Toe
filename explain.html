@@ -3,74 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe - Explanation</title>
+    <title>Mini Games Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .portal-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            padding: 3rem;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 600px;
+            margin: 2rem 0;
+        }
+
+        .portal-container h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .games-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .game-card {
+            display: flex;
+            align-items: center;
+            background: var(--board-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid transparent;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            background: var(--cell-hover);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 10px 15px rgba(0,0,0,0.2);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            margin-right: 1.5rem;
+            width: 80px;
+            height: 80px;
+            background: var(--cell-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2);
+        }
+
+        .game-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--x-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .game-desc {
+            font-size: 1rem;
+            color: rgba(248, 250, 252, 0.7);
+        }
+
+        .future-game {
+            opacity: 0.6;
+            cursor: not-allowed;
+            filter: grayscale(100%);
+        }
+
+        .future-game:hover {
+            transform: none;
+            background: var(--board-bg);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
+            border-color: transparent;
+        }
+
+        @media (max-width: 480px) {
+            .portal-container {
+                padding: 1.5rem;
+            }
+            .portal-container h1 {
+                font-size: 2.2rem;
+            }
+            .game-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+                margin-right: 1rem;
+            }
+            .game-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="explain-container">
-        <h1>Explanation of Game</h1>
+    <div class="portal-container">
+        <h1>Mini Games</h1>
         
-        <section class="explain-section">
-            <p>Tic-Tac-Toe is a simple strategy game played between two players on a square board made of nine spaces arranged in a 3×3 grid.</p>
-            <p>Each player chooses one symbol—usually <strong>X</strong> or <strong>O</strong>. The players then take turns placing their symbol in one empty space at a time. The main objective is to be the first player to place three of your symbols in a straight line.</p>
-            <p>That straight line can be formed in three ways:</p>
-            <ul>
-                <li>Across a horizontal row</li>
-                <li>Down a vertical column</li>
-                <li>Diagonally from one corner to another</li>
-            </ul>
-            <p>If a player succeeds in making such a line, they win the game immediately. If all nine spaces are filled and neither player has formed a line of three matching symbols, the game ends in a draw.</p>
-        </section>
+        <div class="games-list">
+            <!-- Tic Tac Toe Game -->
+            <a href="index.html" class="game-card">
+                <div class="game-icon">
+                    <span style="color: var(--x-color);">X</span><span style="color: var(--o-color);">O</span>
+                </div>
+                <div class="game-info">
+                    <div class="game-title">Tic-Tac-Toe</div>
+                    <div class="game-desc">Play the classic strategy game</div>
+                </div>
+            </a>
 
-        <section class="explain-section">
-            <h2>How the game works step by step</h2>
-            <p>At the start, the board is empty. The first player places their mark in any one of the nine spaces. Then the second player places theirs in another empty space. This process continues until one player wins or the board is full. Because there are only nine spaces, the game is short and easy to understand.</p>
-        </section>
-
-        <section class="explain-section">
-            <h2>Why Tic-Tac-Toe is important in programming</h2>
-            <p>In programming, Tic-Tac-Toe is considered a beginner-friendly project because it teaches logical thinking. To create the game, a programmer must think about:</p>
-            <ul>
-                <li>How to represent the board</li>
-                <li>How to track turns</li>
-                <li>How to detect a winner</li>
-                <li>How to know when the game is over</li>
-                <li>How to restart the game</li>
-            </ul>
-            <p>So even though the game is simple, it introduces important programming concepts.</p>
-        </section>
-
-        <section class="explain-section">
-            <h2>Game logic in simple words</h2>
-            <p>The program must remember which spaces are occupied. Every time a player makes a move, the game checks whether that move creates a winning line.</p>
-            <ul>
-                <li>If yes, the game declares the winner.</li>
-                <li>If no, it checks whether the board is completely full.</li>
-                <li>If full, the game declares a draw.</li>
-                <li>Otherwise, the turn passes to the other player.</li>
-            </ul>
-            <p>This cycle repeats until the game ends.</p>
-        </section>
-
-        <section class="explain-section">
-            <h2>Strategy side of Tic-Tac-Toe</h2>
-            <p>Although it looks simple, the game includes strategy. A smart player tries to:</p>
-            <ul>
-                <li>Create opportunities for themselves</li>
-                <li>Block the opponent’s winning move</li>
-                <li>Control important spaces like the center or corners</li>
-            </ul>
-            <p>With perfect play from both players, Tic-Tac-Toe always ends in a draw. That means the game is “solved”—there is a known best strategy.</p>
-        </section>
-
-        <section class="explain-section">
-            <h2>Overall explanation in one sentence</h2>
-            <p>Tic-Tac-Toe is a two-player game of turns, planning, and pattern recognition where the goal is to align three matching symbols before the opponent does. It is simple enough for beginners but useful enough to teach core ideas in gaming and software logic.</p>
-        </section>
-
-        <div class="back-link-wrapper">
-            <a href="index.html" class="explain-link"><button class="explain-btn">Back to Game</button></a>
+            <!-- Rock Paper Scissors Game -->
+            <a href="rps.html" class="game-card">
+                <div class="game-icon">
+                    <span>✊✋✌️</span>
+                </div>
+                <div class="game-info">
+                    <div class="game-title">Rock Paper Scissors</div>
+                    <div class="game-desc">The classic hand game</div>
+                </div>
+            </a>
+            
+            <!-- Memory Match Game -->
+            <a href="memory.html" class="game-card">
+                <div class="game-icon">
+                    <span>🧠</span>
+                </div>
+                <div class="game-info">
+                    <div class="game-title">Memory Match</div>
+                    <div class="game-desc">Test your memory skills</div>
+                </div>
+            </a>
         </div>
     </div>
 </body>
