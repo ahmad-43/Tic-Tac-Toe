@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Challenge</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .cricket-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 95%;
+            max-width: 700px;
+            margin: 2rem auto;
+            color: white;
+        }
+
+        .challenge-info {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+
+        .challenge-info h2 {
+            margin: 0;
+            color: #38bdf8;
+            font-size: 1.5rem;
+        }
+
+        .challenge-info p {
+            margin: 0.5rem 0 0;
+            color: #e2e8f0;
+            font-size: 1.1rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Stadium / Ground */
+        .stadium {
+            width: 100%;
+            height: 250px;
+            background: radial-gradient(ellipse at center, #4ade80 0%, #166534 100%);
+            border-radius: 120px;
+            position: relative;
+            border: 6px solid #064e3b;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.5);
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .stadium::before {
+            content: '';
+            position: absolute;
+            top: 5px; left: 5px; right: 5px; bottom: 5px;
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 110px;
+            pointer-events: none;
+        }
+
+        .pitch {
+            width: 80%;
+            height: 60px;
+            background: #d4d4d8;
+            border: 1px solid #a8a29e;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .crease {
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 3px;
+            background: white;
+            opacity: 0.9;
+        }
+        .bowler-crease { left: 15%; }
+        .batsman-crease { right: 15%; }
+
+        .sweet-spot-zone {
+            position: absolute;
+            top: 0; bottom: 0;
+            right: 15%;
+            width: 15%;
+            background: rgba(234, 179, 8, 0.4);
+            border-left: 2px dashed #eab308;
+        }
+        
+        .perfect-zone {
+            position: absolute;
+            top: 0; bottom: 0;
+            right: 19%;
+            width: 4%;
+            background: rgba(239, 68, 68, 0.6);
+        }
+
+        /* Players */
+        .player-svg {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            z-index: 10;
+        }
+        .bowler-container {
+            position: absolute;
+            left: 2%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .batsman-container {
+            position: absolute;
+            right: 2%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* SVG Parts Transform Origins */
+        .arm-r, .arm-l, .arms-bat { transform-origin: 25px 22px; }
+        .leg-l, .leg-r { transform-origin: 25px 35px; }
+
+        .ball {
+            width: 14px;
+            height: 14px;
+            background: #dc2626;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 15%;
+            transform: translate(-50%, -50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 5;
+        }
+
+        /* Animations */
+        @keyframes runUp {
+            0% { transform: translateY(-50%) translateX(-40px); }
+            100% { transform: translateY(-50%) translateX(0); }
+        }
+
+        @keyframes bowlingArm {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .bowling .arm-r {
+            animation: bowlingArm 0.3s linear;
+        }
+
+        .running {
+            animation: runUp 1s linear forwards;
+        }
+        .running .leg-l {
+            animation: legMove 0.2s alternate infinite;
+        }
+        .running .leg-r {
+            animation: legMove2 0.2s alternate infinite;
+        }
+
+        @keyframes legMove {
+            0% { transform: rotate(-20deg); }
+            100% { transform: rotate(20deg); }
+        }
+        @keyframes legMove2 {
+            0% { transform: rotate(20deg); }
+            100% { transform: rotate(-20deg); }
+        }
+
+        @keyframes swingBat {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(110deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .swinging .arms-bat {
+            animation: swingBat 0.3s ease-out;
+        }
+
+        /* Controls & Messages */
+        .controls {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .controls button {
+            padding: 1rem 3rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        #btn-hit {
+            background: #f59e0b;
+            color: white;
+            box-shadow: 0 4px 0 #d97706;
+            width: 200px;
+        }
+        #btn-hit:hover:not(:disabled) { background: #d97706; transform: translateY(2px); box-shadow: 0 2px 0 #b45309; }
+        #btn-hit:disabled { background: #64748b; box-shadow: 0 4px 0 #475569; cursor: not-allowed; }
+
+        #btn-start {
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 4px 0 #2563eb;
+        }
+        #btn-start:hover:not(:disabled) { background: #2563eb; transform: translateY(2px); box-shadow: 0 2px 0 #1d4ed8; }
+
+        #btn-reset {
+            background: #10b981;
+            color: white;
+            box-shadow: 0 4px 0 #059669;
+        }
+        #btn-reset:hover:not(:disabled) { background: #059669; transform: translateY(2px); box-shadow: 0 2px 0 #047857; }
+
+        #message {
+            font-size: 1.5rem;
+            font-weight: 800;
+            min-height: 2rem;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-top: 0.5rem;
+        }
+
+        .hit-text {
+            position: absolute;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 2px 5px black, 0 0 10px rgba(255,255,255,0.5);
+            animation: popUp 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        @keyframes popUp {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
+            50% { transform: translate(-50%, -100%) scale(1.3); }
+            100% { opacity: 0; transform: translate(-50%, -150%) scale(1); }
+        }
+
+        .help-text {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-top: -0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" style="margin-left: 20px; display: inline-block;">
+        <button class="explain-btn" style="padding: 10px 20px; font-family: 'Outfit'; border-radius: 8px; border: none; background: rgba(30, 41, 59, 0.8); color: white; cursor: pointer; border: 1px solid rgba(255,255,255,0.2);">← Go back</button>
+    </a>
+    
+    <div class="cricket-container">
+        <header>
+            <h1 style="margin: 0;">Cricket Strike</h1>
+        </header>
+
+        <div class="challenge-info">
+            <h2 id="challenge-title">Challenge</h2>
+            <p id="challenge-desc">Target: 20 Runs in 6 Balls (2 Wickets)</p>
+        </div>
+
+        <div class="stats">
+            <div id="stat-score">Score: 0 / 0W</div>
+            <div id="stat-balls">Balls Left: 6</div>
+        </div>
+
+        <div class="stadium">
+            <div class="pitch" id="pitch">
+                <div class="crease bowler-crease"></div>
+                <div class="sweet-spot-zone"></div>
+                <div class="perfect-zone"></div>
+                <div class="crease batsman-crease"></div>
+                
+                <div class="bowler-container" id="bowler">
+                    <svg viewBox="0 0 50 50" class="player-svg bowler-svg">
+                        <line x1="25" y1="20" x2="25" y2="35" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="25" cy="12" r="6" fill="#fcd34d"/>
+                        <line class="leg-l" x1="25" y1="35" x2="20" y2="48" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        <line class="leg-r" x1="25" y1="35" x2="30" y2="48" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        <line class="arm-l" x1="25" y1="22" x2="18" y2="30" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        <line class="arm-r" x1="25" y1="22" x2="25" y2="10" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                
+                <div class="ball" id="ball"></div>
+                
+                <div class="batsman-container" id="batsman">
+                    <svg viewBox="0 0 50 50" class="player-svg batsman-svg">
+                        <line x1="25" y1="20" x2="25" y2="35" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="25" cy="12" r="6" fill="#fcd34d"/>
+                        <path d="M 19 12 A 6 6 0 0 1 31 12 L 32 15 L 18 15 Z" fill="#3b82f6"/>
+                        <line class="leg-l" x1="25" y1="35" x2="20" y2="48" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        <line class="leg-r" x1="25" y1="35" x2="30" y2="48" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        <g class="arms-bat">
+                            <line x1="25" y1="22" x2="15" y2="28" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                            <line x1="25" y1="22" x2="18" y2="29" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                            <rect x="13" y="27" width="6" height="18" fill="#b45309" rx="1"/>
+                            <rect x="15" y="23" width="2" height="4" fill="#d97706"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div id="message">Press Start to begin!</div>
+
+        <div class="controls">
+            <button id="btn-start">Start Match</button>
+            <button id="btn-hit" style="display: none;" disabled>HIT!</button>
+            <button id="btn-reset" style="display: none;">Next Challenge</button>
+        </div>
+        <div class="help-text" id="help-text" style="display: none;">(Press Space or Enter to Hit)</div>
+    </div>
+
+    <script src="cricket.js"></script>
+</body>
+</html>
